@@ -1,0 +1,11 @@
+
+
+{% block content %}
+<h1>Welcome to the BlogNest</h1>
+{% if user.is_authenticated %}
+    Hi {{ user.username }}!
+{% else %}
+    <a href="{% url 'login' %}">Login</a> | <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+<p>This is the home page.</p>
+{% endblock %}
