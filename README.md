@@ -1,13 +1,13 @@
-# Blog App
+# Blog Nest
 
-Welcome to the Blog App, a Django  application that allows users to create, view, like, comment and search for blogs. This project participates in Hacktoberest 2025 and all successful PRs made here will be counted among the successful pull requests that you'd need to make in order to be eligible for the Hacktoberfest appreciation.We invite you to join our vibrant community and contribute to making Blog App even better during Hacktoberfest 2025!
+Welcome to BlogNest, a Django  application that allows users to create, view, like, comment and search for blogs. This project participates in Hacktoberest 2025 and all successful PRs made here will be counted among the successful pull requests that you'd need to make in order to be eligible for the Hacktoberfest appreciation.We invite you to join our vibrant community and contribute to making Blog App even better during Hacktoberfest 2025!
 
 
 <img src="https://res.cloudinary.com/dbvyvfe61/image/upload/v1619799241/Cicada%203301:%20Reinvented/MSTC_ffmo9v.png" width="10%">
 
 ---
-## About Blog App
-Blog App allows various blog operations such as creating blogs, viewing them, like and comment others blogs and filter/search blogs.
+## About BlogNest
+BlogNest allows various blog operations such as creating blogs, viewing them, like and comment others blogs and filter/search blogs.
 
 ## Features
 - **Create Blog**: Create new blog.
@@ -16,6 +16,7 @@ Blog App allows various blog operations such as creating blogs, viewing them, li
 
 ### :hammer_and_wrench: Skills
 * Python
+* Django
 
 ### :dart: What you have to do
 * First check `contributing.md` for details on how to work with github.
@@ -58,7 +59,7 @@ Use the command deactivate to deactivate the virtual environment.
 ```pip install django-bootstrap4```
 
 #### Run the following command in terminal to clone the Repository in your local machine  
-`git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_django.git`  
+`git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_BlogNest.git`  
 
 #### Head to the project directory using the command -
 ```cd <name_of_your_project>```
@@ -68,7 +69,7 @@ Start the local server on your machine by using the command -
 
 These should be the last two lines displayed in your terminal -  
 Starting development server at http://127.0.0.1:8000/  
-Quit the server with CTRL-BREAK.  
+Quit the server with CTRL-C.  
 
 ##### If the above lines show up, you're ready to develop!
 
