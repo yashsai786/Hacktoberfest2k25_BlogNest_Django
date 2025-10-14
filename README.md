@@ -59,7 +59,7 @@ Use the command deactivate to deactivate the virtual environment.
 ```pip install django-bootstrap4```
 
 #### Run the following command in terminal to clone the Repository in your local machine  
-`git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_BlogNest.git`  
+`git clone https://github.com/MSTC-DA-IICT/Hacktoberfest2k25_BlogNest_Django.git`  
 
 #### Head to the project directory using the command -
 ```cd <name_of_your_project>```
