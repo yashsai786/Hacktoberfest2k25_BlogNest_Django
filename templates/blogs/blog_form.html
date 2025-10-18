@@ -1,496 +1,283 @@
 {% extends 'base.html' %} {% load static %} {% block title %} {% if
 form.instance.pk %}Edit Blog Post{% else %}Create New Blog Post{% endif %} -
-BlogNest {% endblock %} {% block extra_css %}
-<style>
-  .form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+BlogNest {% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+          <h3 class="card-title mb-0">
+            <i class="fas fa-edit"></i>
+            {% if form.instance.pk %}Edit Blog Post{% else %}Create New Blog
+            Post{% endif %}
+          </h3>
+        </div>
+        <div class="card-body">
+          <form method="post" novalidate>
+            {% csrf_token %}
 
-  .form-section {
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background: #f8f9fa;
-  }
+            <!-- Display form errors at the top -->
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              <ul class="mb-0">
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
 
-  .form-section h4 {
-    color: #495057;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #007bff;
-  }
+            <!-- Blog Title -->
+            <div class="mb-3">
+              <label for="{{ form.title.id_for_label }}" class="form-label">
+                <strong>{{ form.title.label }}</strong>
+                {% if form.title.field.required %}<span class="text-danger"
+                  >*</span
+                >{% endif %}
+              </label>
+              {{ form.title }} {% if form.title.help_text %}
+              <div class="form-text">{{ form.title.help_text }}</div>
+              {% endif %} {% if form.title.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.title.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
 
-  .form-group {
-    margin-bottom: 20px;
-  }
+            <!-- Blog Excerpt -->
+            <div class="mb-3">
+              <label for="{{ form.excerpt.id_for_label }}" class="form-label">
+                <strong>{{ form.excerpt.label }}</strong>
+              </label>
+              {{ form.excerpt }} {% if form.excerpt.help_text %}
+              <div class="form-text">{{ form.excerpt.help_text }}</div>
+              {% endif %} {% if form.excerpt.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.excerpt.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
 
-  .form-label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 5px;
-    display: block;
-  }
+            <!-- Blog Content -->
+            <div class="mb-3">
+              <label for="{{ form.content.id_for_label }}" class="form-label">
+                <strong>{{ form.content.label }}</strong>
+                {% if form.content.field.required %}<span class="text-danger"
+                  >*</span
+                >{% endif %}
+              </label>
+              {{ form.content }} {% if form.content.help_text %}
+              <div class="form-text">{{ form.content.help_text }}</div>
+              {% endif %} {% if form.content.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.content.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
 
-  .form-control {
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    padding: 10px;
-    font-size: 14px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  }
+            <!-- Tags -->
+            <div class="mb-3">
+              <label for="{{ form.tags.id_for_label }}" class="form-label">
+                <strong>{{ form.tags.label }}</strong>
+              </label>
+              {{ form.tags }} {% if form.tags.help_text %}
+              <div class="form-text">{{ form.tags.help_text }}</div>
+              {% endif %} {% if form.tags.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.tags.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
 
-  .form-control:focus {
-    border-color: #007bff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
+            <!-- Publish Status -->
+            <div class="mb-4">
+              <label for="{{ form.status.id_for_label }}" class="form-label">
+                <strong>{{ form.status.label }}</strong>
+                {% if form.status.field.required %}<span class="text-danger"
+                  >*</span
+                >{% endif %}
+              </label>
+              {{ form.status }} {% if form.status.help_text %}
+              <div class="form-text">{{ form.status.help_text }}</div>
+              {% endif %} {% if form.status.errors %}
+              <div class="text-danger small mt-1">
+                {% for error in form.status.errors %}
+                <div>{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
 
-  .form-check-input {
-    margin-top: 0.25rem;
-    margin-right: 0.5rem;
-  }
+            <!-- Form Actions -->
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="{% url 'blogs:home' %}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+              </a>
+              <div>
+                {% if form.instance.pk %}
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save"></i> Update Blog Post
+                </button>
+                {% else %}
+                <button
+                  type="submit"
+                  name="save_draft"
+                  class="btn btn-outline-primary me-2"
+                >
+                  <i class="fas fa-file-alt"></i> Save as Draft
+                </button>
+                <button type="submit" name="publish" class="btn btn-success">
+                  <i class="fas fa-paper-plane"></i> Publish Blog
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
 
-  .form-check-label {
-    margin-bottom: 0;
-    font-weight: 500;
-  }
-
-  .help-text {
-    font-size: 12px;
-    color: #6c757d;
-    margin-top: 5px;
-  }
-
-  .error-message {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 5px;
-  }
-
-  .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 10px 30px;
-    font-weight: 600;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    transform: translateY(-1px);
-  }
-
-  .btn-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-    padding: 10px 30px;
-    font-weight: 600;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-
-  .btn-secondary:hover {
-    background-color: #545b62;
-    border-color: #545b62;
-  }
-
-  .character-count {
-    font-size: 11px;
-    color: #6c757d;
-    text-align: right;
-    margin-top: 2px;
-  }
-
-  .required-field {
-    color: #dc3545;
-  }
-
-  .preview-section {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 15px;
-    margin-top: 10px;
-  }
-
-  .image-preview {
-    max-width: 200px;
-    max-height: 200px;
-    border-radius: 5px;
-    margin-top: 10px;
-  }
-
-  .alert {
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 5px;
-  }
-
-  .alert-info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
-  }
-
-  .alert-warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeaa7;
-  }
-</style>
-{% endblock %} {% block content %}
-<div class="container">
-  <div class="form-container">
-    <div class="text-center mb-4">
-      <h2>
-        {% if form.instance.pk %}
-        <i class="fas fa-edit"></i> Edit Blog Post {% else %}
-        <i class="fas fa-plus-circle"></i> Create New Blog Post {% endif %}
-      </h2>
-      <p class="text-muted">
-        {% if form.instance.pk %} Update your blog post details below {% else %}
-        Share your thoughts with the world by creating a new blog post {% endif
-        %}
-      </p>
+      <!-- Writing Tips Card -->
+      <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+          <h5 class="card-title mb-0">
+            <i class="fas fa-lightbulb"></i> Writing Tips
+          </h5>
+        </div>
+        <div class="card-body">
+          <ul class="mb-0">
+            <li>
+              <strong>Title:</strong> Make it catchy and descriptive to grab
+              readers' attention
+            </li>
+            <li>
+              <strong>Excerpt:</strong> Write a compelling summary that
+              encourages readers to continue
+            </li>
+            <li>
+              <strong>Content:</strong> Structure your content with headings,
+              paragraphs, and bullet points
+            </li>
+            <li>
+              <strong>Tags:</strong> Use relevant keywords to help readers
+              discover your post
+            </li>
+            <li>
+              <strong>Draft vs Publish:</strong> Save as draft to work on later,
+              or publish immediately
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-
-    {% if form.errors %}
-    <div class="alert alert-warning">
-      <h5>
-        <i class="fas fa-exclamation-triangle"></i> Please correct the following
-        errors:
-      </h5>
-      <ul class="mb-0">
-        {% for field, errors in form.errors.items %} {% for error in errors %}
-        <li><strong>{{ field|title }}:</strong> {{ error }}</li>
-        {% endfor %} {% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-
-    <form method="post" enctype="multipart/form-data" id="blogForm">
-      {% csrf_token %}
-
-      <!-- Basic Information Section -->
-      <div class="form-section">
-        <h4><i class="fas fa-info-circle"></i> Basic Information</h4>
-
-        <div class="form-group">
-          <label for="{{ form.title.id_for_label }}" class="form-label">
-            Title <span class="required-field">*</span>
-          </label>
-          {{ form.title }}
-          <div class="help-text">{{ form.title.help_text }}</div>
-          {% if form.title.errors %}
-          <div class="error-message">{{ form.title.errors.0 }}</div>
-          {% endif %}
-          <div class="character-count">
-            <span id="title-count">0</span>/200 characters
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.slug.id_for_label }}" class="form-label">
-            URL Slug
-          </label>
-          {{ form.slug }}
-          <div class="help-text">{{ form.slug.help_text }}</div>
-          {% if form.slug.errors %}
-          <div class="error-message">{{ form.slug.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.excerpt.id_for_label }}" class="form-label">
-            Excerpt
-          </label>
-          {{ form.excerpt }}
-          <div class="help-text">{{ form.excerpt.help_text }}</div>
-          {% if form.excerpt.errors %}
-          <div class="error-message">{{ form.excerpt.errors.0 }}</div>
-          {% endif %}
-          <div class="character-count">
-            <span id="excerpt-count">0</span>/500 characters
-          </div>
-        </div>
-      </div>
-
-      <!-- Content Section -->
-      <div class="form-section">
-        <h4><i class="fas fa-file-alt"></i> Content</h4>
-
-        <div class="form-group">
-          <label for="{{ form.content.id_for_label }}" class="form-label">
-            Blog Content <span class="required-field">*</span>
-          </label>
-          {{ form.content }}
-          <div class="help-text">{{ form.content.help_text }}</div>
-          {% if form.content.errors %}
-          <div class="error-message">{{ form.content.errors.0 }}</div>
-          {% endif %}
-          <div class="character-count">
-            <span id="content-count">0</span> characters (minimum 100)
-          </div>
-        </div>
-      </div>
-
-      <!-- Categorization Section -->
-      <div class="form-section">
-        <h4><i class="fas fa-tags"></i> Categorization</h4>
-
-        <div class="form-group">
-          <label for="{{ form.category.id_for_label }}" class="form-label">
-            Category
-          </label>
-          {{ form.category }}
-          <div class="help-text">{{ form.category.help_text }}</div>
-          {% if form.category.errors %}
-          <div class="error-message">{{ form.category.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.new_category.id_for_label }}" class="form-label">
-            Or Create New Category
-          </label>
-          {{ form.new_category }}
-          <div class="help-text">{{ form.new_category.help_text }}</div>
-          {% if form.new_category.errors %}
-          <div class="error-message">{{ form.new_category.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.tags.id_for_label }}" class="form-label">
-            Tags
-          </label>
-          {{ form.tags }}
-          <div class="help-text">{{ form.tags.help_text }}</div>
-          {% if form.tags.errors %}
-          <div class="error-message">{{ form.tags.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.new_tags.id_for_label }}" class="form-label">
-            Or Add New Tags
-          </label>
-          {{ form.new_tags }}
-          <div class="help-text">{{ form.new_tags.help_text }}</div>
-          {% if form.new_tags.errors %}
-          <div class="error-message">{{ form.new_tags.errors.0 }}</div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Media Section -->
-      <div class="form-section">
-        <h4><i class="fas fa-image"></i> Media</h4>
-
-        <div class="form-group">
-          <label
-            for="{{ form.featured_image.id_for_label }}"
-            class="form-label"
-          >
-            Featured Image
-          </label>
-          {{ form.featured_image }}
-          <div class="help-text">{{ form.featured_image.help_text }}</div>
-          {% if form.featured_image.errors %}
-          <div class="error-message">{{ form.featured_image.errors.0 }}</div>
-          {% endif %} {% if form.instance.featured_image %}
-          <div class="preview-section">
-            <strong>Current Image:</strong><br />
-            <img
-              src="{{ form.instance.featured_image.url }}"
-              alt="Current featured image"
-              class="image-preview"
-            />
-          </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Publishing Options Section -->
-      <div class="form-section">
-        <h4><i class="fas fa-cog"></i> Publishing Options</h4>
-
-        <div class="form-group">
-          <label for="{{ form.status.id_for_label }}" class="form-label">
-            Status <span class="required-field">*</span>
-          </label>
-          {{ form.status }}
-          <div class="help-text">{{ form.status.help_text }}</div>
-          {% if form.status.errors %}
-          <div class="error-message">{{ form.status.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <div class="form-check">
-            {{ form.is_featured }}
-            <label
-              for="{{ form.is_featured.id_for_label }}"
-              class="form-check-label"
-            >
-              {{ form.is_featured.help_text }}
-            </label>
-          </div>
-          {% if form.is_featured.errors %}
-          <div class="error-message">{{ form.is_featured.errors.0 }}</div>
-          {% endif %}
-        </div>
-
-        <div class="form-group">
-          <div class="form-check">
-            {{ form.allow_comments }}
-            <label
-              for="{{ form.allow_comments.id_for_label }}"
-              class="form-check-label"
-            >
-              {{ form.allow_comments.help_text }}
-            </label>
-          </div>
-          {% if form.allow_comments.errors %}
-          <div class="error-message">{{ form.allow_comments.errors.0 }}</div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- Form Actions -->
-      <div class="text-center mt-4">
-        <button
-          type="button"
-          class="btn btn-secondary"
-          onclick="window.history.back()"
-        >
-          <i class="fas fa-arrow-left"></i> Cancel
-        </button>
-        <button type="submit" class="btn btn-primary">
-          {% if form.instance.pk %}
-          <i class="fas fa-save"></i> Update Blog Post {% else %}
-          <i class="fas fa-plus"></i> Create Blog Post {% endif %}
-        </button>
-      </div>
-    </form>
   </div>
 </div>
 
+<!-- Custom CSS for form styling -->
+<style>
+  .form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+
+  .form-label {
+    color: #495057;
+    font-weight: 600;
+  }
+
+  .form-text {
+    color: #6c757d;
+    font-size: 0.875em;
+  }
+
+  .card {
+    border: none;
+    border-radius: 10px;
+  }
+
+  .card-header {
+    border-radius: 10px 10px 0 0 !important;
+    border-bottom: none;
+  }
+
+  .btn {
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  .text-danger {
+    color: #dc3545 !important;
+  }
+
+  .alert {
+    border-radius: 8px;
+    border: none;
+  }
+</style>
+
+<!-- JavaScript for enhanced form functionality -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Character count for title
-    const titleField = document.getElementById("{{ form.title.id_for_label }}");
-    const titleCount = document.getElementById("title-count");
-
-    if (titleField && titleCount) {
-      titleField.addEventListener("input", function () {
-        titleCount.textContent = this.value.length;
-      });
-      // Initialize count
-      titleCount.textContent = titleField.value.length;
-    }
-
-    // Character count for excerpt
-    const excerptField = document.getElementById(
-      "{{ form.excerpt.id_for_label }}"
-    );
-    const excerptCount = document.getElementById("excerpt-count");
-
-    if (excerptField && excerptCount) {
-      excerptField.addEventListener("input", function () {
-        excerptCount.textContent = this.value.length;
-      });
-      // Initialize count
-      excerptCount.textContent = excerptField.value.length;
-    }
-
-    // Character count for content
-    const contentField = document.getElementById(
+    // Auto-resize textarea for content field
+    const contentTextarea = document.getElementById(
       "{{ form.content.id_for_label }}"
     );
-    const contentCount = document.getElementById("content-count");
-
-    if (contentField && contentCount) {
-      contentField.addEventListener("input", function () {
-        contentCount.textContent = this.value.length;
+    if (contentTextarea) {
+      contentTextarea.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = this.scrollHeight + "px";
       });
-      // Initialize count
-      contentCount.textContent = contentField.value.length;
     }
 
-    // Auto-generate slug from title
-    const slugField = document.getElementById("{{ form.slug.id_for_label }}");
-    if (titleField && slugField) {
-      titleField.addEventListener("input", function () {
-        if (!slugField.value || slugField.value === "") {
-          // Simple slug generation (you might want to use a more sophisticated approach)
-          const slug = this.value
-            .toLowerCase()
-            .replace(/[^a-z0-9\s-]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-")
-            .trim("-");
-          slugField.value = slug;
+    // Character counter for title and excerpt
+    function addCharacterCounter(fieldId, maxLength) {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        const counter = document.createElement("small");
+        counter.className = "form-text text-muted";
+        counter.style.float = "right";
+
+        function updateCounter() {
+          const remaining = maxLength - field.value.length;
+          counter.textContent = `${field.value.length}/${maxLength} characters`;
+          counter.style.color = remaining < 50 ? "#dc3545" : "#6c757d";
         }
-      });
+
+        field.parentNode.appendChild(counter);
+        field.addEventListener("input", updateCounter);
+        updateCounter();
+      }
     }
 
-    // Image preview
-    const imageField = document.getElementById(
-      "{{ form.featured_image.id_for_label }}"
-    );
-    if (imageField) {
-      imageField.addEventListener("change", function (e) {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            // Remove existing preview
-            const existingPreview = document.querySelector(".image-preview");
-            if (existingPreview) {
-              existingPreview.remove();
-            }
+    addCharacterCounter("{{ form.title.id_for_label }}", 200);
+    addCharacterCounter("{{ form.excerpt.id_for_label }}", 300);
 
-            // Create new preview
-            const preview = document.createElement("img");
-            preview.src = e.target.result;
-            preview.className = "image-preview";
-            preview.alt = "Image preview";
-
-            // Insert after the file input
-            imageField.parentNode.appendChild(preview);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
-    }
-
-    // Form validation
-    const form = document.getElementById("blogForm");
+    // Form validation feedback
+    const form = document.querySelector("form");
     if (form) {
       form.addEventListener("submit", function (e) {
-        const title = titleField.value.trim();
-        const content = contentField.value.trim();
+        const requiredFields = form.querySelectorAll("[required]");
+        let isValid = true;
 
-        if (title.length < 10) {
-          alert("Title must be at least 10 characters long.");
-          e.preventDefault();
-          return;
-        }
+        requiredFields.forEach(function (field) {
+          if (!field.value.trim()) {
+            field.classList.add("is-invalid");
+            isValid = false;
+          } else {
+            field.classList.remove("is-invalid");
+          }
+        });
 
-        if (content.length < 100) {
-          alert("Content must be at least 100 characters long.");
+        if (!isValid) {
           e.preventDefault();
-          return;
+          alert("Please fill in all required fields.");
         }
       });
     }
