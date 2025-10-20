@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth import views as auth_views
-
+from django.views.generic import CreateView, ListView
 
 from .models import User, BlogPost
+from .forms import BlogPostForm
 
 def signup_view(request):
     if request.method == 'POST':
@@ -32,3 +33,7 @@ def home_view(request):
     return render(request, 'home.html', {'posts': posts})
     
 
+class BlogPostCreateView(CreateView):
+    model = BlogPost
+    form_class = BlogPostForm
+    
